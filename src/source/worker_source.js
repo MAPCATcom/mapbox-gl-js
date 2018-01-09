@@ -7,6 +7,7 @@ import type {Bucket} from '../data/bucket';
 import type FeatureIndex from '../data/feature_index';
 import type {CollisionBoxArray} from '../data/array_types';
 import type {DEMData} from '../data/dem_data';
+import type LanguageConfig from '../util/language_config';
 
 export type TileParameters = {
     source: string,
@@ -21,7 +22,8 @@ export type WorkerTileParameters = TileParameters & {
     tileSize: number,
     pixelRatio: number,
     overscaling: number,
-    showCollisionBoxes: boolean
+    showCollisionBoxes: boolean,
+    languageConfig: LanguageConfig
 };
 
 export type WorkerDEMTileParameters = TileParameters & {

@@ -348,6 +348,16 @@ class Map extends Camera {
         this.on('dataloading', this._onDataLoading);
     }
 
+    setLanguage(languageCode: string) {
+        if (this.style) {
+            this.style.setLanguage(languageCode);
+        } else {
+            this.on('style.load', function() {
+                this.style.setLanguage(languageCode);
+            });
+        }
+    }
+
     /**
      * Adds a {@link IControl} to the map, calling `control.onAdd(this)`.
      *
