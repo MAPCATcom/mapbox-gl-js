@@ -9952,6 +9952,13 @@ transform-filter@^0.1.1:
     multimatch "^2.0.0"
     through "^2.3.6"
 
+transliterations@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/transliterations/-/transliterations-1.6.4.tgz#bda07e9b0936fd6b9c8be4677d2dae309dd5a471"
+  dependencies:
+    babel-preset-es2015 "^6.24.1"
+    yargs "^9.0.1"
+
 trim-lines@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/trim-lines/-/trim-lines-1.1.0.tgz#9926d03ede13ba18f7d42222631fb04c79ff26fe"
