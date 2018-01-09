@@ -5,6 +5,7 @@ import type Style from '../style/style';
 import type {TypedStyleLayer} from '../style/style_layer/typed_style_layer';
 import type FeatureIndex from './feature_index';
 import type Context from '../gl/context';
+import type LanguageConfig from '../util/language_config';
 
 export type BucketParameters<Layer: TypedStyleLayer> = {
     index: number,
@@ -18,7 +19,8 @@ export type BucketParameters<Layer: TypedStyleLayer> = {
 export type PopulateParameters = {
     featureIndex: FeatureIndex,
     iconDependencies: {},
-    glyphDependencies: {}
+    glyphDependencies: {},
+    languageConfig: LanguageConfig
 }
 
 export type IndexedFeature = {

@@ -22,6 +22,7 @@ import type {
     WorkerTileParameters,
     WorkerTileCallback,
 } from '../source/worker_source';
+import type LanguageConfig from '../util/language_config';
 
 class WorkerTile {
     tileID: OverscaledTileID;
@@ -52,7 +53,7 @@ class WorkerTile {
         this.showCollisionBoxes = params.showCollisionBoxes;
     }
 
-    parse(data: VectorTile, layerIndex: StyleLayerIndex, actor: Actor, callback: WorkerTileCallback) {
+    parse(data: VectorTile, layerIndex: StyleLayerIndex, actor: Actor, callback: WorkerTileCallback, languageConfig: LanguageConfig) {
         this.status = 'parsing';
         this.data = data;
 
@@ -67,7 +68,8 @@ class WorkerTile {
         const options = {
             featureIndex: featureIndex,
             iconDependencies: {},
-            glyphDependencies: {}
+            glyphDependencies: {},
+            languageConfig: languageConfig
         };
 
         const layerFamilies = layerIndex.familiesBySource[this.source];
@@ -105,7 +107,8 @@ class WorkerTile {
                     zoom: this.zoom,
                     pixelRatio: this.pixelRatio,
                     overscaling: this.overscaling,
-                    collisionBoxArray: this.collisionBoxArray
+                    collisionBoxArray: this.collisionBoxArray,
+                    languageConfig: languageConfig
                 });
 
                 bucket.populate(features, options);

@@ -118,7 +118,7 @@ class VectorTileWorkerSource implements WorkerSource {
 
                 // Transferring a copy of rawTileData because the worker needs to retain its copy.
                 callback(null, util.extend({rawTileData: rawTileData.slice(0)}, result, cacheControl));
-            });
+            }, params.languageConfig);
 
             this.loaded[source] = this.loaded[source] || {};
             this.loaded[source][uid] = workerTile;
@@ -139,7 +139,7 @@ class VectorTileWorkerSource implements WorkerSource {
             if (workerTile.status === 'parsing') {
                 workerTile.reloadCallback = callback;
             } else if (workerTile.status === 'done') {
-                workerTile.parse(workerTile.vectorTile, this.layerIndex, this.actor, done.bind(workerTile));
+                workerTile.parse(workerTile.vectorTile, this.layerIndex, this.actor, done.bind(workerTile), params.languageConfig);
             }
 
         }
@@ -148,7 +148,7 @@ class VectorTileWorkerSource implements WorkerSource {
             if (this.reloadCallback) {
                 const reloadCallback = this.reloadCallback;
                 delete this.reloadCallback;
-                this.parse(this.vectorTile, vtSource.layerIndex, vtSource.actor, reloadCallback);
+                this.parse(this.vectorTile, vtSource.layerIndex, vtSource.actor, reloadCallback, params.languageConfig);
             }
 
             callback(err, data);

@@ -6,6 +6,7 @@ const StyleLayerIndex = require('../style/style_layer_index');
 const VectorTileWorkerSource = require('./vector_tile_worker_source');
 const RasterDEMTileWorkerSource = require('./raster_dem_tile_worker_source');
 const GeoJSONWorkerSource = require('./geojson_worker_source');
+const LanguageConfig = require('../util/language_config');
 const assert = require('assert');
 
 const globalRTLTextPlugin = require('./rtl_text_plugin');
@@ -32,6 +33,7 @@ class Worker {
     workerSourceTypes: { [string]: Class<WorkerSource> };
     workerSources: { [string]: { [string]: WorkerSource } };
     demWorkerSources: { [string]: RasterDEMTileWorkerSource };
+    languageConfigs: Object;
 
     constructor(self: WorkerGlobalScopeInterface) {
         this.self = self;
@@ -62,6 +64,7 @@ class Worker {
             globalRTLTextPlugin['applyArabicShaping'] = rtlTextPlugin.applyArabicShaping;
             globalRTLTextPlugin['processBidirectionalText'] = rtlTextPlugin.processBidirectionalText;
         };
+        this.languageConfigs = {};
     }
 
     setLayers(mapId: string, layers: Array<LayerSpecification>, callback: WorkerTileCallback) {
@@ -74,8 +77,20 @@ class Worker {
         callback();
     }
 
+    getLanguageConfigByMapId(mapId: string) {
+        if (!this.languageConfigs[mapId]) {
+            this.languageConfigs[mapId] = new LanguageConfig();
+        }
+        return this.languageConfigs[mapId];
+    }
+
+    updateLanguage(mapId: string, languageCode: any) {
+        this.getLanguageConfigByMapId(mapId).setLanguage(languageCode);
+    }
+
     loadTile(mapId: string, params: WorkerTileParameters & {type: string}, callback: WorkerTileCallback) {
         assert(params.type);
+        params.languageConfig = this.getLanguageConfigByMapId(mapId);
         this.getWorkerSource(mapId, params.type).loadTile(params, callback);
     }
 
@@ -85,6 +100,7 @@ class Worker {
 
     reloadTile(mapId: string, params: WorkerTileParameters & {type: string}, callback: WorkerTileCallback) {
         assert(params.type);
+        params.languageConfig = this.getLanguageConfigByMapId(mapId);
         this.getWorkerSource(mapId, params.type).reloadTile(params, callback);
     }
 

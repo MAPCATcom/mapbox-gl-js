@@ -223,6 +223,13 @@ class Style extends Evented {
         this.fire('style.load');
     }
 
+    setLanguage(languageCode: string) {
+        this.dispatcher.broadcast('updateLanguage', languageCode);
+        for (const id in this.sourceCaches) {
+            this.sourceCaches[id].reload();
+        }
+    }
+
     _validateLayer(layer: StyleLayer) {
         const sourceCache = this.sourceCaches[layer.source];
         if (!sourceCache) {

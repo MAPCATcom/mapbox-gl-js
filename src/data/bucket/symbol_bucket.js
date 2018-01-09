@@ -351,6 +351,7 @@ class SymbolBucket implements Bucket {
         const icons = options.iconDependencies;
         const stacks = options.glyphDependencies;
         const globalProperties =  {zoom: this.zoom};
+        const languageConfig = options.languageConfig;
 
         for (const {feature, index, sourceLayerIndex} of features) {
             if (!layer._featureFilter(globalProperties, feature)) {
@@ -359,7 +360,12 @@ class SymbolBucket implements Bucket {
 
             let text;
             if (hasText) {
-                text = layer.getValueAndResolveTokens('text-field', feature);
+                const isMultiLangField = (layer.layout.get('text-field').evaluate(feature) === '{name}');
+                if (isMultiLangField) {
+                    text = languageConfig.getText(feature.properties, this.zoom);
+                } else {
+                    text = layer.getValueAndResolveTokens('text-field', feature);
+                }
                 text = transformText(text, layer, feature);
             }
 
